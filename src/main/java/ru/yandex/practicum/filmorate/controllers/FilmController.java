@@ -16,8 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    int id = 0;
-    HashMap<Integer, Film> films = new HashMap<>();
+    private int id = 0;
+    private HashMap<Integer, Film> films = new HashMap<>();
 
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
@@ -48,6 +48,21 @@ public class FilmController {
     public List<Film> filmsList() {
         List<Film> filmsList = new ArrayList<>(films.values());
         return filmsList;
+    }
+
+    public static void validation (Film film) {
+        if(film.getName() == null || film.getName().isEmpty()) {
+            throw new ValidationException("Bad film name");
+        }
+        if(film.getDescription().length() > 200) {
+            throw new ValidationException("Too mach description");
+        }
+        if(film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
+            throw new ValidationException("Very old film");
+        }
+        if(film.getDuration() <= 0) {
+            throw new ValidationException("Must be a positive");
+        }
     }
 
 }
