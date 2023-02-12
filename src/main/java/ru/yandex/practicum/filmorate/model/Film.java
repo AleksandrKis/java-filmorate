@@ -8,13 +8,11 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Getter
-@Setter
-@EqualsAndHashCode
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
+    @EqualsAndHashCode.Include
+    int id;
     @NotBlank
     private String name;
     @Size(min = 1,max = 200)
@@ -23,4 +21,5 @@ public class Film {
     private LocalDate releaseDate;
     @Min(1)
     private long duration;
+
 }
