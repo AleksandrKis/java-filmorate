@@ -52,8 +52,8 @@ public class UserController {
                     users.put(keyId,user);
                     log.debug("Обновлён пользователь: "+users.get(id));
                 }else {
-                    log.warn("НЕТ ТАКОГО USER "+keyId);
-                    throw new ValidationException("НЕТ ТАКОГО USER "+keyId);
+                    log.warn("Не зарегистрирован пользователь с ID :"+keyId);
+                    throw new ValidationException("Не найдден ID :"+keyId);
                 }
             }
         }catch (ValidationException e) {
@@ -70,11 +70,14 @@ public class UserController {
     }
 
     public static boolean validation (User user) {
+        if(user.getEmail() == null || (!user.getEmail().contains("@"))) {
+            throw new ValidationException("email format is wrong");
+        }
         if(user.getLogin().contains(" ")||user.getLogin().isEmpty()) {
-            throw new ValidationException("ЛОГИН НЕ ТОТ");
+            throw new ValidationException("login format is wrong");
         }
         if(user.getBirthday().isAfter(LocalDate.now())) {
-            throw new ValidationException("ЕЩЁ НЕ РОЖДЁН");
+            throw new ValidationException("Birthday can't be");
         }
         return true;
     }
