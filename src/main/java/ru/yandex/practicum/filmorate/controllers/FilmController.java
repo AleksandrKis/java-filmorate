@@ -22,11 +22,13 @@ public class FilmController {
     @PostMapping
     public Film create(@Valid @RequestBody Film film) {
             if(film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
-                throw new ValidationException("ФИЛЬМ НАДО МОЛОЖЕ");
+                log.warn("Ошибка валидации ReleaseDate:"+film.getReleaseDate());
+                throw new ValidationException("ФИЛЬМУ НАДО БЫТЬ МОЛОЖЕ");
             }else {
                 ++id;
                 film.setId(id);
                 films.put(id,film);
+                log.debug("Добавлен фильм :"+films.get(id).getName());
             }
         return films.get(id);
     }
@@ -35,11 +37,14 @@ public class FilmController {
     public Film update(@Valid @RequestBody Film film) {
         int keyId = film.getId();
             if(film.getReleaseDate().isBefore(LocalDate.of(1895,12,28))) {
+                log.warn("Ошибка валидации ReleaseDate"+film.getReleaseDate());
                 throw new ValidationException("ФИЛЬМУ НАДО БЫТЬ МОЛОЖЕ");
             }else if (!films.containsKey(keyId)) {
-                throw new ValidationException("НЕТ ТАКОГО ФИЛЬМА "+keyId);
+                log.warn("Ошибка обновления фильма :"+film.getName());
+                throw new ValidationException("Не зарегистрирован фильм с ID :"+keyId);
             }else {
                 films.put(keyId,film);
+                log.debug("Обновлён фильм под ID :"+keyId);
             }
         return films.get(keyId);
     }
