@@ -12,8 +12,10 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,56 +25,52 @@ public class FilmControllerTest {
     public void invalidFieldsFilmTest() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         Validator validator = factory.getValidator();
-        Film film = new Film();
-        film.setName("");
-        film.setDescription("YandexPracticum".repeat(14));
-        film.setDuration(-200);
-        film.setReleaseDate(null);
+        Film film = Film.builder()
+                .name("")
+                .description("YandexPracticum".repeat(14))
+                .duration(-200)
+                .releaseDate(null).build();
         Set<ConstraintViolation<Film>> violations = validator.validate(film);
         assertEquals(violations.size(), 4);
-//        assertEquals("не должно быть пустым"
-//                ,((ConstraintViolationImpl)violations.toArray()[1]).getMessage());//Name
-//        assertEquals("должно быть не меньше 1"
-//                ,((ConstraintViolationImpl)violations.toArray()[2]).getMessage());//Duration
-//        assertEquals("размер должен находиться в диапазоне от 1 до 200"
-//                ,((ConstraintViolationImpl)violations.toArray()[3]).getMessage());//Description
+        violations.forEach(f -> System.out.println("Validation error :"
+                + f.getPropertyPath() + "-" + f.getMessage()));
         violations.clear();
     }
 
     @Test
     public void setEmptyNameFilmValidate() {
-        Film film = new Film();
-        film.setName("");
+        Film film = Film.builder()
+                .name("").build();
         Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
         assertEquals("Bad film name", exception.getMessage());
     }
 
     @Test
     public void setMachDescriptionFilmValidate() {
-        Film film = new Film();
-        film.setName("YandexPracticum");
-        film.setDescription("YandexPracticum".repeat(14));
+        Film film = Film.builder()
+                .name("YandexPracticum")
+                .description("YandexPracticum".repeat(14)).build();
         Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
         assertEquals("Too mach description", exception.getMessage());
     }
 
     @Test
     public void setOldReleaseDateFilmValidate() {
-        Film film = new Film();
-        film.setName("YandexPracticum");
-        film.setDescription("YandexPracticum".repeat(12));
-        film.setReleaseDate(LocalDate.of(1890, 03, 25));
+        Film film = Film.builder()
+                .name("YandexPracticum")
+                .description("YandexPracticum".repeat(12))
+                .releaseDate(LocalDate.of(1890, 03, 25)).build();
         Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
         assertEquals("Very old film", exception.getMessage());
     }
 
     @Test
     public void setNegativeDurationFilmValidate() {
-        Film film = new Film();
-        film.setName("YandexPracticum");
-        film.setDescription("YandexPracticum".repeat(12));
-        film.setReleaseDate(LocalDate.of(1990, 03, 25));
-        film.setDuration(-200);
+        Film film = Film.builder()
+                .name("YandexPracticum")
+                .description("YandexPracticum".repeat(12))
+                .releaseDate(LocalDate.of(1990, 03, 25))
+                .duration(-200).build();
         Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
         assertEquals("Must be a positive", exception.getMessage());
     }
