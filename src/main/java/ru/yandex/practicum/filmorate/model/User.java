@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import javax.validation.constraints.*;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 
 public class User {
     @EqualsAndHashCode.Include
-    int id;
+    private int id;
     @Email
     private String email;
     @NotBlank
