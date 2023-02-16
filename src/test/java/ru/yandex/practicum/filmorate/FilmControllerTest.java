@@ -18,6 +18,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static ru.yandex.practicum.filmorate.controllers.validate.filmValid.validation;
 
 public class FilmControllerTest {
 
@@ -41,7 +42,7 @@ public class FilmControllerTest {
     public void setEmptyNameFilmValidate() {
         Film film = Film.builder()
                 .name("").build();
-        Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(film));
         assertEquals("Bad film name", exception.getMessage());
     }
 
@@ -50,7 +51,7 @@ public class FilmControllerTest {
         Film film = Film.builder()
                 .name("YandexPracticum")
                 .description("YandexPracticum".repeat(14)).build();
-        Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(film));
         assertEquals("Too mach description", exception.getMessage());
     }
 
@@ -60,7 +61,7 @@ public class FilmControllerTest {
                 .name("YandexPracticum")
                 .description("YandexPracticum".repeat(12))
                 .releaseDate(LocalDate.of(1890, 03, 25)).build();
-        Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(film));
         assertEquals("Very old film", exception.getMessage());
     }
 
@@ -71,7 +72,7 @@ public class FilmControllerTest {
                 .description("YandexPracticum".repeat(12))
                 .releaseDate(LocalDate.of(1990, 03, 25))
                 .duration(-200).build();
-        Exception exception = assertThrows(ValidationException.class, () -> FilmController.validation(film));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(film));
         assertEquals("Must be a positive", exception.getMessage());
     }
 }

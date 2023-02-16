@@ -15,6 +15,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static ru.yandex.practicum.filmorate.controllers.validate.userValid.validation;
 
 public class UserControllerTest {
 
@@ -37,7 +38,7 @@ public class UserControllerTest {
     public void emptyEmailTest() {
         User user = User.builder()
                 .email("").build();
-        Exception exception = assertThrows(ValidationException.class, () -> UserController.validation(user));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(user));
         assertEquals("email format is wrong", exception.getMessage());
     }
 
@@ -45,7 +46,7 @@ public class UserControllerTest {
     public void wrongFormatEmailTest() {
         User user = User.builder()
                 .email("practicum#email").build();
-        Exception exception = assertThrows(ValidationException.class, () -> UserController.validation(user));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(user));
         assertEquals("email format is wrong", exception.getMessage());
     }
 
@@ -54,7 +55,7 @@ public class UserControllerTest {
         User user = User.builder()
                 .email("practicum@yandex.ru")
                 .login("").build();
-        Exception exception = assertThrows(ValidationException.class, () -> UserController.validation(user));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(user));
         assertEquals("login format is wrong", exception.getMessage());
     }
 
@@ -63,7 +64,7 @@ public class UserControllerTest {
         User user = User.builder()
                 .email("practicum@yandex.ru")
                 .login("yandex practicum").build();
-        Exception exception = assertThrows(ValidationException.class, () -> UserController.validation(user));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(user));
         assertEquals("login format is wrong", exception.getMessage());
     }
 
@@ -73,7 +74,7 @@ public class UserControllerTest {
                 .email("practicum@yandex.ru")
                 .login("practicum")
                 .birthday((LocalDate.of(2024, 12, 31))).build();
-        Exception exception = assertThrows(ValidationException.class, () -> UserController.validation(user));
+        Exception exception = assertThrows(ValidationException.class, () -> validation(user));
         assertEquals("Birthday can't be", exception.getMessage());
     }
 }
