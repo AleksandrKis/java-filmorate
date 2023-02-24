@@ -2,7 +2,7 @@ package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
@@ -46,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
                 log.debug("Update user :" + userMap.get(id));
             } else {
                 log.warn("User is not registered an ID :" + keyId);
-                throw new ValidationException("not found ID :" + keyId);
+                throw new UserNotFoundException("not found ID :" + keyId);
             }
         }
         return userMap.get(keyId);
