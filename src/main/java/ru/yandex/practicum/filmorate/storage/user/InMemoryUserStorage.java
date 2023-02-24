@@ -46,7 +46,7 @@ public class InMemoryUserStorage implements UserStorage {
                 log.debug("Update user :" + userMap.get(id));
             } else {
                 log.warn("User is not registered an ID :" + keyId);
-                throw new ValidationException("not found ID :" + keyId);
+                throw new UserNotFoundException("not found ID :" + keyId);
             }
         }
         return userMap.get(keyId);
