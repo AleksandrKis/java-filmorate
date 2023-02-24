@@ -6,7 +6,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import static ru.yandex.practicum.filmorate.utilities.Constants.OLDEST_RELEASE;
 
 public class filmValid {
-    public static void validation(Film film) {
+    public static boolean validation(Film film) {
         if (film.getName() == null || film.getName().isEmpty()) {
             throw new ValidationException("Bad film name");
         }
@@ -17,7 +17,8 @@ public class filmValid {
             throw new ValidationException("Very old film");
         }
         if (film.getDuration() <= 0) {
-            throw new ValidationException("Must be a positive");
+            throw new ValidationException("Duration must be a positive");
         }
+        return true;
     }
 }

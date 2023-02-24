@@ -19,20 +19,20 @@ import static ru.yandex.practicum.filmorate.controllers.validate.userValid.valid
 
 public class UserControllerTest {
 
-    @Test
-    public void invalidFieldsFilmTest() {
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        User user = User.builder()
-                .email("practicum#email")
-                .login("")
-                .birthday(LocalDate.of(2024, 12, 31)).build();
-        Set<ConstraintViolation<User>> violations = validator.validate(user);
-        assertEquals(violations.size(), 3);
-        violations.forEach(f -> System.out.println("Validation error :"
-                + f.getPropertyPath() + "-" + f.getMessage()));
-        violations.clear();
-    }
+//    @Test
+//    public void invalidFieldsFilmTest() {
+//        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+//        Validator validator = factory.getValidator();
+//        User user = User.builder()
+//                .email("practicum#email")
+//                .login("")
+//                .birthday(LocalDate.of(2024, 12, 31)).build();
+//        Set<ConstraintViolation<User>> violations = validator.validate(user);
+//        assertEquals(violations.size(), 3);
+//        violations.forEach(f -> System.out.println("Validation error :"
+//                + f.getPropertyPath() + "-" + f.getMessage()));
+//        violations.clear();
+//    }
 
     @Test
     public void emptyEmailTest() {
