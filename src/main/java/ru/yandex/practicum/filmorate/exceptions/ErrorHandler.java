@@ -19,4 +19,10 @@ public class ErrorHandler {
     public ErrorResponse handleNotValid(RuntimeException e) {
         return new ErrorResponse("Validation error", e.getMessage());
     }
+
+    @ExceptionHandler({FilmAlreadyHaveException.class, UserAlreadyHaveException.class})
+    @ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+    public ErrorResponse handleAlreadyHave(RuntimeException e) {
+        return new ErrorResponse("Already have", e.getMessage());
+    }
 }

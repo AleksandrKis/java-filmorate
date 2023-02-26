@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.filmorate.exceptions.FilmAlreadyHaveException;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
@@ -28,7 +29,7 @@ public class FilmService {
     }
 
     public List<Film> filmsList() {
-        return filmStorage.filmsList();
+        return filmStorage.getAllFilms();
     }
 
     public Film findFilmById(Integer id) {
@@ -44,7 +45,9 @@ public class FilmService {
             Film film = findFilmById(filmId);
             if (film.getLikes().contains(userId)) {
                 log.debug(userStorage.getUserMap()
-                        .get(userId).getName()+" your like is have film by name : "+ findFilmById(filmId).getName());
+                        .get(userId).getName()+" your like already have by film name : "+ findFilmById(filmId).getName());
+                throw new FilmAlreadyHaveException(userStorage.getUserMap()
+                        .get(userId).getName()+" your like already have by film name : "+ findFilmById(filmId).getName());
             } else {
                 film.getLikes().add(userId);
             }
@@ -59,6 +62,8 @@ public class FilmService {
             if (!film.getLikes().contains(userId)) {
                 log.debug(userStorage.getUserMap()
                         .get(userId).getName()+"-this movie doesn't have your like : "+ findFilmById(filmId).getName());
+                throw new UserNotFoundException(userStorage.getUserMap()
+                        .get(userId).getName()+" your like not found by film : "+ findFilmById(filmId).getName());
             } else {
                 film.getLikes().remove(userId);
             }

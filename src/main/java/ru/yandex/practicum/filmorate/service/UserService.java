@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exceptions.ErrorResponse;
+import ru.yandex.practicum.filmorate.exceptions.UserAlreadyHaveException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
@@ -15,10 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
     private final UserStorage userStorage;
 
     public User create(User user) {
@@ -37,13 +40,17 @@ public class UserService {
         if (userStorage.getUserMap().containsKey(id)) {
             return userStorage.getUserMap().get(id);
         } else {
-            throw new UserNotFoundException("not found User by Id: "+id);
+            throw new UserNotFoundException("not found User by Id: " + id);
         }
     }
 
     public void addFriendById(Integer userId, Integer friendId) {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
+        if (user.getFriends().contains(friendId)) {
+            log.debug(user.getName() + " You're already have that's friend: " + friend.getName());
+            throw new UserAlreadyHaveException(user.getName() + ", You're already have that's friend: " + friend.getName());
+        }
         user.getFriends().add(friendId);
         friend.getFriends().add(userId);
     }
@@ -52,7 +59,8 @@ public class UserService {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
         if (!user.getFriends().contains(friendId)) {
-            log.debug(user.getName()+" You're haven't that's friend."+friend.getName());
+            log.debug(user.getName() + " You're haven't that's friend." + friend.getName());
+            throw new UserNotFoundException(user.getName() + ", we are not found your friend by name: " + friend.getName());
         } else {
             user.getFriends().remove(friendId);
         }

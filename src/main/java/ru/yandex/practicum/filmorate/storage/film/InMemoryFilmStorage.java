@@ -15,8 +15,10 @@ import static ru.yandex.practicum.filmorate.controllers.validate.FilmValidation.
 @Slf4j
 @Component
 public class InMemoryFilmStorage implements FilmStorage {
+
     private int id = 0;
-    private Map<Integer, Film> filmMap = new LinkedHashMap<>();
+
+    private final Map<Integer, Film> filmMap = new LinkedHashMap<>();
 
     public Map<Integer, Film> getFilmMap() {
         return filmMap;
@@ -47,7 +49,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     }
 
     @Override
-    public List<Film> filmsList() {
+    public List<Film> getAllFilms() {
         List<Film> filmsList = new ArrayList<>(filmMap.values());
         return filmsList;
     }

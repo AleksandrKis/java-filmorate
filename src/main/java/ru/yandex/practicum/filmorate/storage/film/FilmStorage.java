@@ -18,7 +18,7 @@ public interface FilmStorage {
     Film update(@Valid @RequestBody Film film);
 
     @GetMapping
-    List<Film> filmsList();
+    List<Film> getAllFilms();
 
     Map<Integer, Film> getFilmMap();
 }
