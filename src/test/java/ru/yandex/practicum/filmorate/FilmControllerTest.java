@@ -1,24 +1,13 @@
 package ru.yandex.practicum.filmorate;
 
-import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.junit.jupiter.api.Test;
-import ru.yandex.practicum.filmorate.controllers.FilmController;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static ru.yandex.practicum.filmorate.controllers.validate.filmValid.validation;
+import static ru.yandex.practicum.filmorate.controllers.validate.FilmValidation.validation;
 
 public class FilmControllerTest {
 

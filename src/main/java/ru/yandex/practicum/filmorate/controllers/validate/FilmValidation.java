@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import static ru.yandex.practicum.filmorate.utilities.Constants.OLDEST_RELEASE;
 
-public class filmValid {
+public class FilmValidation {
     public static boolean validation(Film film) {
         if (film.getName() == null || film.getName().isEmpty()) {
             throw new ValidationException("Bad film name");

@@ -7,7 +7,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 
-import static ru.yandex.practicum.filmorate.controllers.validate.userValid.validation;
+import static ru.yandex.practicum.filmorate.controllers.validate.UserValidation.validation;
 
 @Slf4j
 @Component

@@ -2,28 +2,18 @@ package ru.yandex.practicum.filmorate.controllers;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
-import static ru.yandex.practicum.filmorate.controllers.validate.userValid.validation;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    private final UserService userService;
 
     @PostMapping
     public User create(@Valid @RequestBody User user) {
@@ -61,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> usersList() {
+    public List<User> getAllUsers() {
         return userService.usersList();
     }
 

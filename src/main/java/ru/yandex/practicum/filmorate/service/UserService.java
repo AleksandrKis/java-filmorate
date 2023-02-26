@@ -1,5 +1,7 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,15 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
-    UserStorage userStorage;
-
-    @Autowired
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
+    private final UserStorage userStorage;
 
     public User create(User user) {
         return userStorage.create(user);
@@ -39,7 +37,7 @@ public class UserService {
         if (userStorage.getUserMap().containsKey(id)) {
             return userStorage.getUserMap().get(id);
         } else {
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException("not found User by Id: "+id);
         }
     }
 
@@ -54,7 +52,7 @@ public class UserService {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
         if (!user.getFriends().contains(friendId)) {
-            System.out.println("You're haven't that's friend.");
+            log.debug(user.getName()+" You're haven't that's friend."+friend.getName());
         } else {
             user.getFriends().remove(friendId);
         }

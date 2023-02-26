@@ -5,8 +5,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-@RestControllerAdvice(basePackages = "ru.yandex.practicum.filmorate.controllers")
+@RestControllerAdvice(basePackages = "ru.yandex.practicum.filmorate")
 public class ErrorHandler {
+
     @ExceptionHandler({FilmNotFoundException.class, UserNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorResponse handleNotFound(RuntimeException e) {

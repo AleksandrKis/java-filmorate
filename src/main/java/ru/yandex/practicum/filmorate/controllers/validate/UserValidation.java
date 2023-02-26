@@ -5,7 +5,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
-public class userValid {
+public class UserValidation {
     public static boolean validation(User user) {
         if (user.getEmail() == null || (!user.getEmail().contains("@"))) {
             throw new ValidationException("email format is wrong");

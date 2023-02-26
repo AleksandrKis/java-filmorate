@@ -1,32 +1,23 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-
+@RequiredArgsConstructor
 @Service
+@Slf4j
 public class FilmService {
-    FilmStorage filmStorage;
-    UserStorage userStorage;
-
-    @Autowired
-    public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
+    private final FilmStorage filmStorage;
+    private final UserStorage userStorage;
 
     public Film create(Film film) {
         return filmStorage.create(film);
@@ -44,7 +35,7 @@ public class FilmService {
         if (filmStorage.getFilmMap().containsKey(id)) {
             return filmStorage.getFilmMap().get(id);
         } else {
-            throw new FilmNotFoundException("Film not found.");
+            throw new FilmNotFoundException("Film not found.by Id "+id);
         }
     }
 
@@ -52,12 +43,13 @@ public class FilmService {
         if (userStorage.getUserMap().containsKey(userId)) {
             Film film = findFilmById(filmId);
             if (film.getLikes().contains(userId)) {
-                System.out.println("your like is have");
+                log.debug(userStorage.getUserMap()
+                        .get(userId).getName()+" your like is have film by name : "+ findFilmById(filmId).getName());
             } else {
                 film.getLikes().add(userId);
             }
         } else {
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException("User not found by Id: "+userId);
         }
     }
 
@@ -65,12 +57,13 @@ public class FilmService {
         if (userStorage.getUserMap().containsKey(userId)) {
             Film film = findFilmById(filmId);
             if (!film.getLikes().contains(userId)) {
-                System.out.println("your like isn't have");
+                log.debug(userStorage.getUserMap()
+                        .get(userId).getName()+"-this movie doesn't have your like : "+ findFilmById(filmId).getName());
             } else {
                 film.getLikes().remove(userId);
             }
         } else {
-            throw new UserNotFoundException("User not found.");
+            throw new UserNotFoundException("User not found by Id: "+userId);
         }
     }
 
@@ -78,7 +71,7 @@ public class FilmService {
         return f.getLikes().size();
     }
 
-    public List<Film> popularFilmList(Integer count) {
+    public List<Film> getPopularFilmList(Integer count) {
         return filmStorage
                 .getFilmMap()
                 .values()
