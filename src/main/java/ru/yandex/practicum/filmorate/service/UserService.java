@@ -48,8 +48,8 @@ public class UserService {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
         if (user.getFriends().contains(friendId)) {
-            log.debug(user.getName() + " You're already have that's friend: " + friend.getName());
-            throw new UserAlreadyHaveException(user.getName() + ", You're already have that's friend: " + friend.getName());
+            log.debug("You're already have that's friend ID: " + friendId);
+            throw new UserAlreadyHaveException("You're already have that's friend ID: "+friendId);
         }
         user.getFriends().add(friendId);
         friend.getFriends().add(userId);
@@ -59,8 +59,8 @@ public class UserService {
         User user = findUserById(userId);
         User friend = findUserById(friendId);
         if (!user.getFriends().contains(friendId)) {
-            log.debug(user.getName() + " You're haven't that's friend." + friend.getName());
-            throw new UserNotFoundException(user.getName() + ", we are not found your friend by name: " + friend.getName());
+            log.debug("You're haven't that's friend ID:" + friendId);
+            throw new UserNotFoundException("we are not found your friend by ID: " + friendId);
         } else {
             user.getFriends().remove(friendId);
         }

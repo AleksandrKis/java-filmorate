@@ -13,9 +13,10 @@ import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-@RequiredArgsConstructor
-@Service
+
 @Slf4j
+@Service
+@RequiredArgsConstructor
 public class FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
@@ -44,10 +45,8 @@ public class FilmService {
         if (userStorage.getUserMap().containsKey(userId)) {
             Film film = findFilmById(filmId);
             if (film.getLikes().contains(userId)) {
-                log.debug(userStorage.getUserMap()
-                        .get(userId).getName()+" your like already have by film name : "+ findFilmById(filmId).getName());
-                throw new FilmAlreadyHaveException(userStorage.getUserMap()
-                        .get(userId).getName()+" your like already have by film name : "+ findFilmById(filmId).getName());
+                log.debug("your like already have by film Id : "+ filmId);
+                throw new FilmAlreadyHaveException("your like already have by film Id : "+ filmId);
             } else {
                 film.getLikes().add(userId);
             }
@@ -60,10 +59,8 @@ public class FilmService {
         if (userStorage.getUserMap().containsKey(userId)) {
             Film film = findFilmById(filmId);
             if (!film.getLikes().contains(userId)) {
-                log.debug(userStorage.getUserMap()
-                        .get(userId).getName()+"-this movie doesn't have your like : "+ findFilmById(filmId).getName());
-                throw new UserNotFoundException(userStorage.getUserMap()
-                        .get(userId).getName()+" your like not found by film : "+ findFilmById(filmId).getName());
+                log.debug("this movie doesn't have your like : "+ filmId);
+                throw new UserNotFoundException("your like not found by film Id: "+ filmId);
             } else {
                 film.getLikes().remove(userId);
             }
