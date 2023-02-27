@@ -1,25 +1,23 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.*;
-import lombok.extern.slf4j.Slf4j;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
-import javax.tools.Tool;
-import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
-@Slf4j
 @Data
+@Builder
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Film {
     @EqualsAndHashCode.Include
     private int id;
-    @NotBlank
     private String name;
-    @Size(min = 1, max = 200)
     private String description;
-    @NotNull
     private LocalDate releaseDate;
-    @Min(1)
     private long duration;
+    private final Set<Integer> likes = new HashSet<>();
 
 }
